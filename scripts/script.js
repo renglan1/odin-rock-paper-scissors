@@ -1,12 +1,20 @@
 const options = ["rock", "paper", "scissors"];
 
-playGame();
-
 function getComputerChoice() {
   return options[Math.floor(Math.random() * options.length)];
 }
 
-function playGame() {
+document.getElementById("rock").addEventListener("click", () => {
+  incrementScore(playRound("rock", getComputerChoice()));
+});
+document.getElementById("paper").addEventListener("click", () => {
+  incrementScore(playRound("paper", getComputerChoice()));
+});
+document.getElementById("scissors").addEventListener("click", () => {
+  incrementScore(playRound("scissors", getComputerChoice()));
+});
+
+/*function playGame() {
   let playerCount = 0;
   let computerCount = 0;
 
@@ -24,16 +32,41 @@ function playGame() {
     }
     console.log(playerCount, computerCount);
   }
+}*/
+
+function incrementScore(result) {
+  const resultDiv = document.getElementById('result');
+  const playerScoreSpan = document.getElementById('player-score');
+  const computerScoreSpan = document.getElementById('computer-score');
+
+  if(result === 1) {
+    const playerScore = parseInt(playerScoreSpan.textContent) + 1;
+    playerScoreSpan.textContent = playerScore;
+
+    if(playerScore > 4) {
+      resultDiv.textContent = 'Player wins!';
+    }
+  }
+  else if(result === 0) {
+    const computerScore = parseInt(computerScoreSpan.textContent) + 1;
+    computerScoreSpan.textContent = computerScore;
+
+    if(computerScore > 4) {
+      resultDiv.textContent = 'Computer wins!';
+    }
+  }
 }
 
 function playRound(playerChoice, computerChoice) {
+  const resultDiv = document.getElementById('result');
+
   if (playerChoice === computerChoice) {
-    console.log("Tie!");
+    resultDiv.textContent = 'Tie!';
     return -1;
   }
 
   const result = resolve(playerChoice, computerChoice);
-  console.log(outputResult(result, playerChoice, computerChoice));
+  resultDiv.textContent = outputResult(result, playerChoice, computerChoice);
 
   return result;
 }
